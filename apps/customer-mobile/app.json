@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "Wheelhaus: Car & Bike Wash",
+    "slug": "wheelhaus-customer",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1a1f36"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.wheelhaus.customer",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Wheelhaus uses your location to show verified car wash and detailing centres near you in Kazhakoottam & Technopark.",
+        "NSCameraUsageDescription": "Wheelhaus uses your camera to upload vehicle inspection photos during pick and drop."
+      }
+    },
+    "android": {
+      "package": "com.wheelhaus.customer",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1a1f36"
+      },
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "CAMERA",
+        "POST_NOTIFICATIONS"
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "wheelhaus-customer-app"
+      }
+    }
+  }
+}

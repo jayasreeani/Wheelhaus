@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Wheelhaus Partner: Centre & Washer",
+    "slug": "wheelhaus-partner",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1a1f36"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.wheelhaus.partner",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Wheelhaus Partner tracks driver pickup trips and customer wash addresses."
+      }
+    },
+    "android": {
+      "package": "com.wheelhaus.partner",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1a1f36"
+      },
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "POST_NOTIFICATIONS",
+        "VIBRATE"
+      ]
+    },
+    "extra": {
+      "eas": {
+        "projectId": "wheelhaus-partner-app"
+      }
+    }
+  }
+}

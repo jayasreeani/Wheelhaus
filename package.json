@@ -1,31 +1,26 @@
 {
-  "name": "weelhaus",
-  "private": true,
+  "name": "weelhaus-workspace",
   "version": "1.0.0",
-  "type": "module",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "canvas-confetti": "^1.9.4",
-    "clsx": "^2.1.1",
-    "lucide-react": "^1.16.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tailwind-merge": "^3.5.0"
+    "start:backend": "node apps/backend-api/src/server.ts",
+    "start:customer": "npm run start --prefix apps/customer-mobile",
+    "start:partner": "npm run start --prefix apps/partner-mobile",
+    "start:admin": "npm run dev --prefix apps/admin-web",
+    "build:all": "npm run build --workspaces --if-present"
   },
   "devDependencies": {
-    "@tailwindcss/vite": "^4.3.5",
-    "@types/canvas-confetti": "^1.9.0",
-    "@types/react": "^18.3.18",
-    "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^4.3.4",
-    "autoprefixer": "^10.4.20",
-    "postcss": "^8.4.49",
-    "tailwindcss": "^4.3.5",
-    "typescript": "^5.7.2",
-    "vite": "^6.0.7"
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "cors": "^2.8.6",
+    "express": "^5.3.0",
+    "tsx": "^4.23.15"
   }
 }
