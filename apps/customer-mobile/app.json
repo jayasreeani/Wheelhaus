@@ -35,8 +35,19 @@
     },
     "extra": {
       "eas": {
-        "projectId": "wheelhaus-customer-app"
+        "projectId": "7b33a392-3570-424d-9146-a5a49bffa795"
+      }
+    },
+    "owner": "jayasree.kuniyil",
+    "plugins": [
+  [
+    "expo-build-properties",
+    {
+      "android": {
+        "kotlinVersion": "1.9.25"
       }
     }
+  ]
+]
   }
 }

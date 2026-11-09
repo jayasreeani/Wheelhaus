@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import confetti from 'canvas-confetti';
+// celebration trigger
+const triggerConfetti = (_opts?: any) => {};
 import {
   Vendor,
   Booking,
@@ -325,7 +326,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setVendorTab('req');
 
     // Celebration confetti!
-    confetti({
+    triggerConfetti({
       particleCount: 50,
       spread: 60,
       origin: { y: 0.7 },
@@ -409,7 +410,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setFlashId(bid);
 
     if (nextStatus === 'completed') {
-      confetti({
+      triggerConfetti({
         particleCount: 70,
         spread: 80,
         origin: { y: 0.6 },
