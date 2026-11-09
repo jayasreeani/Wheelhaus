@@ -1,3 +1,8 @@
+# Expo
+.expo/
+.eas/
+*.tsbuildinfo
+
 # Logs
 logs
 *.log

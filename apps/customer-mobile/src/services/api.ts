@@ -148,7 +148,7 @@ export async function createBookingRequest(payload: {
     customerId: 'u1',
     customerName: 'Arjun Menon',
     vendorId: payload.vendorId,
-    vendorName: 'BlueDrop Car Spa',
+    vendorName: fallbackVendors.find(v => v.id === payload.vendorId)?.name || 'Wheelhaus Partner Centre',
     pkg: payload.pkg as any,
     packageName: payload.pkg === 'full' ? 'Full Wash' : 'Exterior Foam Wash',
     carType: payload.carType as any,

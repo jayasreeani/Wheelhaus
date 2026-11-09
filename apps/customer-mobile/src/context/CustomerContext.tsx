@@ -1,6 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Vehicle, Vendor, Booking, CustomerTab, ServiceMode } from '../types';
-import { fetchVendors, fetchVehicles, createBookingRequest, submitReview } from '../services/api';
+import {
+  fetchVendors,
+  fetchVehicles,
+  createBookingRequest,
+  submitReview,
+  fallbackVendors,
+  fallbackVehicles,
+} from '../services/api';
 
 interface CustomerContextType {
   vehicles: Vehicle[];
@@ -30,15 +37,11 @@ interface CustomerContextType {
 const CustomerContext = createContext<CustomerContextType | null>(null);
 
 export const CustomerProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
-  const [currentVehicle, setCurrentVehicle] = useState<Vehicle>({
-    id: 'c1',
-    name: 'Hyundai Creta',
-    type: 'SUV',
-    reg: 'KL-01 CK 2231',
-  });
+  // Pre-seed state with fallback data immediately so screen is never blank on initial render
+  const [vehicles, setVehicles] = useState<Vehicle[]>(fallbackVehicles);
+  const [currentVehicle, setCurrentVehicle] = useState<Vehicle>(fallbackVehicles[0]);
 
-  const [vendors, setVendors] = useState<Vendor[]>([]);
+  const [vendors, setVendors] = useState<Vendor[]>(fallbackVendors);
   const [selectedVendor, setSelectedVendor] = useState<Vendor | null>(null);
   const [activeTab, setActiveTab] = useState<CustomerTab>('explore');
 
@@ -49,11 +52,19 @@ export const CustomerProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [addVehicleModalOpen, setAddVehicleModalOpen] = useState(false);
 
   useEffect(() => {
+    // Attempt background sync if backend is reachable
     fetchVehicles().then(data => {
-      setVehicles(data);
-      if (data.length > 0) setCurrentVehicle(data[0]);
-    });
-    fetchVendors().then(data => setVendors(data));
+      if (Array.isArray(data) && data.length > 0) {
+        setVehicles(data);
+        setCurrentVehicle(data[0]);
+      }
+    }).catch(() => {});
+
+    fetchVendors().then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        setVendors(data);
+      }
+    }).catch(() => {});
   }, []);
 
   // Timer loop for countdown
@@ -88,7 +99,7 @@ export const CustomerProvider: React.FC<{ children: ReactNode }> = ({ children }
     const booking = await createBookingRequest({
       vendorId: selectedVendor.id,
       pkg,
-      carType: currentVehicle.type,
+      carType: currentVehicle?.type || 'SUV',
       mode,
       slot,
       address,

@@ -62,9 +62,9 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
     },
   ];
 
-  const ti = ['Hatchback', 'Sedan', 'SUV', 'Bike'].indexOf(currentVehicle.type);
-  const currentPkgPrice = selectedVendor.prices[chosenPkg]?.[ti] || 699;
-  const currentModeFee = chosenMode === 'walkin' ? 0 : (selectedVendor.modes[chosenMode] as any)?.fee || 0;
+  const ti = ['Hatchback', 'Sedan', 'SUV', 'Bike'].indexOf(currentVehicle?.type || 'SUV');
+  const currentPkgPrice = (selectedVendor?.prices && selectedVendor.prices[chosenPkg]?.[ti]) || 699;
+  const currentModeFee = chosenMode === 'walkin' ? 0 : ((selectedVendor?.modes && (selectedVendor.modes[chosenMode] as any)?.fee) || 0);
   const grandTotal = currentPkgPrice + currentModeFee;
 
   return (
@@ -136,7 +136,7 @@ export const VendorDetailScreen: React.FC<VendorDetailScreenProps> = ({
         {/* Section 2: Choose Wash Package */}
         <View style={styles.pkgHeaderRow}>
           <Text style={styles.sectionHeader}>Choose Package</Text>
-          <Text style={styles.carBadge}>{currentVehicle.name} ({currentVehicle.type})</Text>
+          <Text style={styles.carBadge}>{currentVehicle?.name || 'Vehicle'} ({currentVehicle?.type || 'Car'})</Text>
         </View>
 
         <View style={styles.pkgList}>

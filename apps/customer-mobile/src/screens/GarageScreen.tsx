@@ -21,7 +21,7 @@ export const GarageScreen: React.FC = () => {
 
       <View style={styles.list}>
         {vehicles.map(v => {
-          const isSelected = v.id === currentVehicle.id;
+          const isSelected = currentVehicle ? v.id === currentVehicle.id : false;
 
           return (
             <TouchableOpacity

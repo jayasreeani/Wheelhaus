@@ -30,7 +30,7 @@ export const VehicleSwitcherModal: React.FC = () => {
 
           <View style={styles.vehicleList}>
             {vehicles.map(v => {
-              const isSelected = v.id === currentVehicle.id;
+              const isSelected = currentVehicle ? v.id === currentVehicle.id : false;
 
               return (
                 <TouchableOpacity

@@ -13,7 +13,7 @@ import { COLORS, SPACING, RADIUS } from '../theme/theme';
 
 export const HomeScreen: React.FC = () => {
   const {
-    vendors,
+    vendors = [],
     currentVehicle,
     setSelectedVendor,
     activeBooking,
@@ -23,25 +23,33 @@ export const HomeScreen: React.FC = () => {
   const [modeFilter, setModeFilter] = useState<ServiceMode | 'all'>('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Calculate pricing based on vehicle
+  // Calculate pricing based on vehicle safely
   const getStartingPrice = (v: Vendor) => {
-    const ti = ['Hatchback', 'Sedan', 'SUV', 'Bike'].indexOf(currentVehicle.type);
+    if (!v || !v.prices) return 349;
+    const vType = currentVehicle?.type || 'SUV';
+    const ti = ['Hatchback', 'Sedan', 'SUV', 'Bike'].indexOf(vType);
     const valid = Object.values(v.prices)
-      .map(arr => arr[ti])
+      .map(arr => (Array.isArray(arr) && ti >= 0 ? arr[ti] : undefined))
       .filter(p => typeof p === 'number');
     return valid.length ? Math.min(...valid) : 349;
   };
 
-  const filtered = vendors
+  const filtered = (vendors || [])
     .filter(v => {
+      if (!v) return false;
       if (modeFilter === 'all') return true;
-      return v.modes[modeFilter]?.on;
+      return v.modes && v.modes[modeFilter]?.on;
     })
     .filter(v => {
       if (!searchQuery.trim()) return true;
       const q = searchQuery.toLowerCase();
-      return v.name.toLowerCase().includes(q) || v.area.toLowerCase().includes(q);
+      const vName = v.name?.toLowerCase() || '';
+      const vArea = v.area?.toLowerCase() || '';
+      return vName.includes(q) || vArea.includes(q);
     });
+
+  const carName = currentVehicle?.name || 'Your Vehicle';
+  const carType = currentVehicle?.type || 'Vehicle';
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -91,7 +99,7 @@ export const HomeScreen: React.FC = () => {
           <Text style={styles.heroPre}>TECHNOPARK & KAZHAKOOTTAM</Text>
           <Text style={styles.heroTitle}>Premium vehicle care right at your fingertips</Text>
           <Text style={styles.heroSub}>
-            Snow foam wash, deep interior extraction, and doorstep detailing for your {currentVehicle.name}.
+            Snow foam wash, deep interior extraction, and doorstep detailing for your {carName}.
           </Text>
         </View>
         <Text style={styles.heroWatermark}>🚿</Text>
@@ -158,6 +166,7 @@ export const HomeScreen: React.FC = () => {
       <View style={styles.vendorList}>
         {filtered.map(v => {
           const fromPrice = getStartingPrice(v);
+          const vRating = typeof v.rating === 'number' ? v.rating.toFixed(1) : '4.5';
 
           return (
             <TouchableOpacity
@@ -166,8 +175,8 @@ export const HomeScreen: React.FC = () => {
               style={styles.vCard}
               activeOpacity={0.8}
             >
-              <View style={[styles.vAvatar, { backgroundColor: v.color }]}>
-                <Text style={styles.vAvatarText}>{v.name.substring(0, 2).toUpperCase()}</Text>
+              <View style={[styles.vAvatar, { backgroundColor: v.color || COLORS.brand }]}>
+                <Text style={styles.vAvatarText}>{v.name ? v.name.substring(0, 2).toUpperCase() : 'WH'}</Text>
               </View>
 
               <View style={styles.vInfo}>
@@ -177,30 +186,30 @@ export const HomeScreen: React.FC = () => {
                   </Text>
                   <View style={styles.vRatingPill}>
                     <Text style={styles.vRatingStar}>★</Text>
-                    <Text style={styles.vRatingVal}>{v.rating.toFixed(1)}</Text>
+                    <Text style={styles.vRatingVal}>{vRating}</Text>
                   </View>
                 </View>
 
                 <Text style={styles.vArea}>{v.area}</Text>
 
                 <View style={styles.vMetaRow}>
-                  <Text style={styles.vMetaText}>📍 {v.dist} km</Text>
+                  <Text style={styles.vMetaText}>📍 {v.dist || 1.2} km</Text>
                   <Text style={styles.vMetaDot}>•</Text>
-                  <Text style={styles.vMetaText}>🕒 {v.hours}</Text>
+                  <Text style={styles.vMetaText}>🕒 {v.hours || '7 AM - 8 PM'}</Text>
                 </View>
 
                 {/* Service Modes Tags */}
                 <View style={styles.tagRow}>
-                  {v.modes.walkin?.on && <Text style={styles.modeTag}>Centre</Text>}
-                  {v.modes.pickup?.on && <Text style={styles.modeTag}>Pick & Drop</Text>}
-                  {v.modes.home?.on && <Text style={styles.modeTag}>Doorstep</Text>}
+                  {v.modes?.walkin?.on && <Text style={styles.modeTag}>Centre</Text>}
+                  {v.modes?.pickup?.on && <Text style={styles.modeTag}>Pick & Drop</Text>}
+                  {v.modes?.home?.on && <Text style={styles.modeTag}>Doorstep</Text>}
                 </View>
               </View>
 
               <View style={styles.vPriceCol}>
                 <Text style={styles.vPriceLabel}>Starts at</Text>
                 <Text style={styles.vPriceVal}>₹{fromPrice}</Text>
-                <Text style={styles.vPriceType}>for {currentVehicle.type}</Text>
+                <Text style={styles.vPriceType}>for {carType}</Text>
               </View>
             </TouchableOpacity>
           );

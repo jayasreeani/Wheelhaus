@@ -35,9 +35,9 @@ export const BookingScreen: React.FC<BookingScreenProps> = ({
   const days = ['Today', 'Tomorrow', 'Wed 11 Nov'];
   const hours = [9, 10, 11, 12, 14, 15, 16, 17];
 
-  const ti = ['Hatchback', 'Sedan', 'SUV', 'Bike'].indexOf(currentVehicle.type);
-  const basePrice = selectedVendor.prices[pkgId]?.[ti] || 699;
-  const modeFee = mode === 'walkin' ? 0 : (selectedVendor.modes[mode] as any)?.fee || 120;
+  const ti = ['Hatchback', 'Sedan', 'SUV', 'Bike'].indexOf(currentVehicle?.type || 'SUV');
+  const basePrice = (selectedVendor?.prices && selectedVendor.prices[pkgId]?.[ti]) || 699;
+  const modeFee = mode === 'walkin' ? 0 : ((selectedVendor?.modes && (selectedVendor.modes[mode] as any)?.fee) || 120);
   const platformFee = 19;
   const grandTotal = basePrice + modeFee + platformFee;
 
@@ -74,7 +74,7 @@ export const BookingScreen: React.FC<BookingScreenProps> = ({
 
         <Text style={styles.pageTitle}>Confirm Appointment</Text>
         <Text style={styles.pageSubtitle}>
-          Booking with {selectedVendor.name} for your {currentVehicle.name}
+          Booking with {selectedVendor?.name || 'Wash Centre'} for your {currentVehicle?.name || 'Vehicle'}
         </Text>
 
         {/* Order Summary Strip */}
@@ -87,7 +87,7 @@ export const BookingScreen: React.FC<BookingScreenProps> = ({
               {mode === 'walkin' ? 'Drive-in At Centre' : mode === 'pickup' ? 'Pick & Drop Service' : 'At Doorstep'}
             </Text>
           </View>
-          <Text style={styles.summaryCarBadge}>{currentVehicle.reg}</Text>
+          <Text style={styles.summaryCarBadge}>{currentVehicle?.reg || 'KL-01'}</Text>
         </View>
 
         {/* Address input if pickup or home */}
@@ -176,7 +176,7 @@ export const BookingScreen: React.FC<BookingScreenProps> = ({
           <Text style={styles.invoiceTitle}>Bill Summary</Text>
 
           <View style={styles.billRow}>
-            <Text style={styles.billLabel}>Wash Package ({currentVehicle.type})</Text>
+            <Text style={styles.billLabel}>Wash Package ({currentVehicle?.type || 'Vehicle'})</Text>
             <Text style={styles.billVal}>₹{basePrice}</Text>
           </View>
 

@@ -22,6 +22,7 @@
     "android": {
       "package": "com.wheelhaus.customer",
       "versionCode": 1,
+      "usesCleartextTraffic": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#1a1f36"

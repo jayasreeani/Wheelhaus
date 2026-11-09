@@ -6,6 +6,10 @@ import { COLORS, SPACING, RADIUS } from '../theme/theme';
 export const Header: React.FC = () => {
   const { currentVehicle, setVehicleSwitcherOpen } = useCustomer();
 
+  const vehicleName = currentVehicle?.name || 'Hyundai Creta';
+  const vehicleReg = currentVehicle?.reg || 'KL-01 CK 2231';
+  const isBike = currentVehicle?.type === 'Bike';
+
   return (
     <View style={styles.container}>
       {/* Top Location Bar */}
@@ -26,14 +30,12 @@ export const Header: React.FC = () => {
           style={styles.vehicleChip}
           activeOpacity={0.8}
         >
-          <Text style={styles.vehicleEmoji}>
-            {currentVehicle.type === 'Bike' ? '🏍️' : '🚗'}
-          </Text>
+          <Text style={styles.vehicleEmoji}>{isBike ? '🏍️' : '🚗'}</Text>
           <View>
             <Text style={styles.vehicleName} numberOfLines={1}>
-              {currentVehicle.name}
+              {vehicleName}
             </Text>
-            <Text style={styles.vehicleReg}>{currentVehicle.reg}</Text>
+            <Text style={styles.vehicleReg}>{vehicleReg}</Text>
           </View>
           <Text style={styles.vehicleChevron}>›</Text>
         </TouchableOpacity>
