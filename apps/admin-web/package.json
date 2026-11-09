@@ -1,6 +1,7 @@
 {
   "name": "@wheelhaus/admin-web",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "vite --port 5174",

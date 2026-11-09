@@ -12,7 +12,7 @@ import {
   STATUS_LABELS,
   PACKAGES,
   VEHICLE_TYPES,
-} from '../../../packages/shared/src/index.js';
+} from '@wheelhaus/shared';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
